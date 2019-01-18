@@ -36,11 +36,6 @@ defaults
   errorfile 504 /etc/haproxy/errors/504.http
 {% endif %}
 
-{% for proxy in haproxy_proxies %}
-{{ proxy.content }}
-{% endfor %}
-
-
 {% for front in haproxy_frontends %}
 frontend {{ front.name }}
     bind {{ front.address }} {{ front.bind_params |default('') }}
@@ -92,4 +87,8 @@ backend {{ back.name }}
 {%   if back.timeout_server | default('') | length > 0 %}
     timeout server {{ back.timeout_server }}
 {%   endif %}
+{% endfor %}
+
+{% for proxy in haproxy_additional_config %}
+{{ proxy.content }}
 {% endfor %}
